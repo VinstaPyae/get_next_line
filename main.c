@@ -6,11 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 15:23:29 by prafael-          #+#    #+#             */
-/*   Updated: 2024/08/04 19:51:13 by marvin           ###   ########.fr       */
+/*   Updated: 2024/08/04 23:41:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 // int	main(void)
 // {

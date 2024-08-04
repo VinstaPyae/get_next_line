@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/04 23:50:43 by marvin            #+#    #+#             */
-/*   Updated: 2024/08/04 23:50:43 by marvin           ###   ########.fr       */
+/*   Created: 2024/08/04 23:52:39 by marvin            #+#    #+#             */
+/*   Updated: 2024/08/04 23:52:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_polish_line(char *line)
 {
@@ -63,26 +63,26 @@ char	*fill_buff_line(int fd, char *remainder, char *buff)
 
 char	*get_next_line(int fd)
 {
-	static char	*remainder;
+	static char	*remainder[FD_MAX];
 	char		*line;
 	char		*buff;
 
 	buff = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 	{
-		free(remainder);
+		free(remainder[fd]);
 		free(buff);
-		remainder = NULL;
+		remainder[fd] = NULL;
 		buff = NULL;
 		return (NULL);
 	}
 	if (!buff)
 		return (NULL);
-	line = fill_buff_line(fd, remainder, buff);
+	line = fill_buff_line(fd, remainder[fd], buff);
 	free(buff);
 	buff = NULL;
 	if (!line)
 		return (NULL);
-	remainder = ft_polish_line(line);
+	remainder[fd] = ft_polish_line(line);
 	return (line);
 }
