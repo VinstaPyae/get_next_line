@@ -13,19 +13,32 @@ void	testft(void)
 void	test_read(void)
 {
 	int	fd;
-	char	buf[10];
+	char	buf[1000];
+	int	i;
+	int	y;
+	char	buf1[1000];
 
 	fd = open("test.txt", O_RDONLY);
-	int i = read(fd, buf, sizeof(buf) - 1);
-
-	buf[i] = '\0';
+	i = read(fd, buf, 12);
 	printf("Read %i bytes: %s\n", i, buf);
+	y = read(fd, buf1, 12);
+	printf("Read %i bytes: %s\n", y, buf1);
+}
+
+void	test_read1(void)
+{
+	int	fd;
+	char	buf[12];
+	int	i;
+
+	fd = open("test.txt", O_RDONLY);
+	i = read(fd, buf, 12);
+	printf("Read %i bytes: %s\n", i, buf);
+	buf[i] = '\0';
+	printf("Read %i bytes\n", i);
 }
 
 int	main(void)
 {
-	testft();
-	testft();
-	testft();
-	test_read();
+	test_read1();
 }
