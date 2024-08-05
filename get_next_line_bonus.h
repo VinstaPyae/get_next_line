@@ -6,7 +6,7 @@
 /*   By: pzaw <pzaw@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 13:57:41 by pzaw              #+#    #+#             */
-/*   Updated: 2024/08/05 13:57:44 by pzaw             ###   ########.fr       */
+/*   Updated: 2024/08/05 19:33:04 by pzaw             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <fcntl.h>
 
 char	*get_next_line(int fd);
+char	*free_remainder(char **remainder);
 char	*fill_buff_line(int fd, char *remainder, char *buff);
 char	*ft_polish_line(char *line);
 char	*ft_strjoin(char *s1, char *s2);
