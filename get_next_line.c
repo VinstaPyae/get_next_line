@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: pzaw <pzaw@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/04 23:50:43 by marvin            #+#    #+#             */
-/*   Updated: 2024/08/04 23:50:43 by marvin           ###   ########.fr       */
+/*   Created: 2024/08/05 13:58:12 by pzaw              #+#    #+#             */
+/*   Updated: 2024/08/05 16:52:23 by pzaw             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*free_remainder(char **remainder)
+{
+	if (*remainder)
+	{
+		free(*remainder);
+		*remainder = NULL;
+	}
+	return (NULL);
+}
 
 char	*ft_polish_line(char *line)
 {
@@ -20,9 +30,11 @@ char	*ft_polish_line(char *line)
 	i = 0;
 	while (line[i] != '\n' && line[i] != '\0')
 		i++;
-	if (line[i] == 0 || line[1] == 0)
+	if (line[i] == 0)
 		return (NULL);
 	this_remainder = ft_substr(line, i + 1, ft_strlen(line) - i);
+	if (!this_remainder)
+		return (NULL);
 	if (*this_remainder == 0)
 	{
 		free(this_remainder);
@@ -42,10 +54,7 @@ char	*fill_buff_line(int fd, char *remainder, char *buff)
 	{
 		byt_rd = read(fd, buff, BUFFER_SIZE);
 		if (byt_rd == -1)
-		{
-			free(remainder);
-			return (NULL);
-		}
+			return (0);
 		else if (byt_rd == 0)
 			break ;
 		buff[byt_rd] = '\0';
@@ -53,8 +62,11 @@ char	*fill_buff_line(int fd, char *remainder, char *buff)
 			remainder = ft_strdup("");
 		tmp = remainder;
 		remainder = ft_strjoin(tmp, buff);
-		free(tmp);
+		if (tmp)
+			free(tmp);
 		tmp = NULL;
+		if (!remainder)
+			return (NULL);
 		if (ft_strchr(buff, '\n'))
 			break ;
 	}
@@ -66,23 +78,21 @@ char	*get_next_line(int fd)
 	static char	*remainder;
 	char		*line;
 	char		*buff;
+	char		*line_result;
 
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	buff = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
-	{
-		free(remainder);
-		free(buff);
-		remainder = NULL;
-		buff = NULL;
-		return (NULL);
-	}
 	if (!buff)
-		return (NULL);
+		return (free_remainder(&remainder));
 	line = fill_buff_line(fd, remainder, buff);
 	free(buff);
-	buff = NULL;
 	if (!line)
-		return (NULL);
+		return (free_remainder(&remainder));
 	remainder = ft_polish_line(line);
-	return (line);
+	line_result = ft_strdup(line);
+	free(line);
+	if (!line_result)
+		return (free_remainder(&remainder));
+	return (line_result);
 }
